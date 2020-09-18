@@ -5,9 +5,10 @@ const PizzaItem = ({ pizza }) => {
   const { name, description, img, price } = pizza;
   return (
     <article className={classes.Pizza}>
-      <main>
+      <main className={classes.Main}>
         <img className={classes.Image} src={img} alt={name} />
-        <h2 className={classes.Description}>{description}</h2>
+        <h2 className={classes.Name}>{name}</h2>
+        <p className={classes.Description}>{description}</p>
       </main>
       <footer className={classes.Footer}>
         <span className={classes.Price}>{price}</span>

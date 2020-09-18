@@ -9,9 +9,11 @@ import classes from "./PizzaMenu.module.css";
 const GET_PIZZAS = gql`
   query {
     pizzas {
+      _id
       name
       description
       img
+      price
     }
   }
 `;

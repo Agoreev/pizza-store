@@ -3,8 +3,8 @@ import PizzaItem from "./pizza-item";
 import classes from "./pizza-list.module.css";
 
 const PizzaList = ({ data }) => {
-  const list = data.map((pizza) => {
-    return <PizzaItem pizza={pizza} />;
+  const list = data.pizzas.map((pizza) => {
+    return <PizzaItem pizza={pizza} key={pizza._id} />;
   });
   return <div className={classes.PizzaList}>{list}</div>;
 };

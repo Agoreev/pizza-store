@@ -1,0 +1,30 @@
+.Pizza {
+  max-width: 250px;
+  display: flex;
+  flex-flow: column;
+  margin: 20px;
+}
+
+.Main {
+}
+.Image {
+  display: block;
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
+}
+.Name {
+  font-size: 1.2rem;
+}
+.Description {
+  color: #999;
+}
+.Footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Price {
+  font-weight: 500;
+}
