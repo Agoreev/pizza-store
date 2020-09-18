@@ -1,0 +1,17 @@
+.ErrorIndicator {
+  margin: 0 auto;
+}
+.ErrorIndicator img {
+  margin: 0 auto;
+  width: 256px;
+  height: 256px;
+  display: block;
+}
+.ErrorIndicator span {
+  color: rgb(151, 87, 2);
+  display: block;
+  text-align: center;
+}
+.Boom {
+  font-size: 1.5rem;
+}
