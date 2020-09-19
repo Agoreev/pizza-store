@@ -22,19 +22,30 @@ a {
 
 .button {
   background-color: transparent;
+  border: 1px solid #8f5c2c;
+  border-radius: 5px;
+  text-align: center;
+  color: #703b09;
+  outline: none;
+  font-size: 1.5rem;
+  font-weight: 300;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+.icon-button {
+  background-color: transparent;
   border: none;
-  color: white;
   outline: none;
   cursor: pointer;
-  font: inherit;
   padding: 10px;
-  margin: 10px;
+  margin: 0 10px;
   font-weight: bold;
 }
 
 .button:first-of-type {
   margin-left: 0;
-  padding-left: 0;
 }
 
 .success {

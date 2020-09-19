@@ -1,0 +1,15 @@
+.CurrencyToggle {
+  display: flex;
+  align-items: center;
+}
+
+.CurrencyToggle span {
+  font-size: 2rem;
+  color: #999;
+  margin: 0 10px;
+}
+
+.Active {
+  font-weight: bold;
+  color: #333;
+}

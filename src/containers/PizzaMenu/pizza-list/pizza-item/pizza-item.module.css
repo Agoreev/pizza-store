@@ -1,0 +1,46 @@
+.Pizza {
+  max-width: 250px;
+  display: flex;
+  flex-flow: column;
+  margin: 30px auto;
+}
+
+@media (min-width: 500px) {
+  .Pizza {
+    margin: 30px 20px;
+  }
+}
+
+.Image {
+  display: block;
+  margin: 0 auto 25px auto;
+  width: 200px;
+  height: 200px;
+  transition: transform 1s ease-out;
+}
+
+.Image:hover {
+  cursor: pointer;
+  transform: rotate(30deg);
+}
+
+.Name {
+  font-size: 2rem;
+  margin: 5px 0;
+}
+.Description {
+  margin: 5px 0;
+  color: #555;
+}
+.Footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Price {
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1;
+}

@@ -4,6 +4,22 @@
   height: 100%;
   box-sizing: border-box;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.Logo span {
+  margin-left: 25px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  transform: skew(-15deg);
+}
+
+@media (min-width: 500px) {
+  .Logo span {
+    margin-left: 20px;
+  }
 }
 
 .Logo img {

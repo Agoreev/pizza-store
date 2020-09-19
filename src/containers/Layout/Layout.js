@@ -1,7 +1,15 @@
 import React, { Component, Fragment } from "react";
+import { gql } from "apollo-boost";
+import { Query } from "react-apollo";
 import classes from "./Layout.module.css";
 import Toolbar from "../../components/navigation/toolbar";
 import SideDrawer from "../../components/navigation/side-drawer";
+
+const IS_LOGGED_IN = gql`
+  query {
+    isLoggedIn @client
+  }
+`;
 
 class Layout extends Component {
   state = {
@@ -14,20 +22,26 @@ class Layout extends Component {
     });
   };
   render() {
-    const { isAuthenticated, children } = this.props;
+    const { children } = this.props;
     return (
-      <Fragment>
-        <Toolbar
-          isAuthenticated={isAuthenticated}
-          sideDrawerOpen={this.sideDrawerToggleHandler}
-        />
-        <SideDrawer
-          isAuthenticated={isAuthenticated}
-          closed={this.sideDrawerToggleHandler}
-          open={this.state.showSideDrawer}
-        />
-        <main className={classes.content}>{children}</main>
-      </Fragment>
+      <Query query={IS_LOGGED_IN}>
+        {({ data }) => {
+          return (
+            <Fragment>
+              <Toolbar
+                isAuthenticated={data.isLoggedIn}
+                sideDrawerOpen={this.sideDrawerToggleHandler}
+              />
+              <SideDrawer
+                isAuthenticated={data.isLoggedIn}
+                closed={this.sideDrawerToggleHandler}
+                open={this.state.showSideDrawer}
+              />
+              <main className={classes.Content}>{children}</main>
+            </Fragment>
+          );
+        }}
+      </Query>
     );
   }
 }

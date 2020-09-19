@@ -1,12 +1,13 @@
 import React from "react";
 import { gql } from "apollo-boost";
-import { Query } from "react-apollo";
-import PizzaList from "../../components/pizza-list";
+import { useQuery } from "react-apollo";
+import PizzaList from "./pizza-list";
+import CurrencyToggle from "../../containers/currency-toggle";
 import Spinner from "../../components/ui/spinner";
 import ErrorIndicator from "../../components/ui/error-indicator";
 import classes from "./PizzaMenu.module.css";
 
-const GET_PIZZAS = gql`
+export const GET_PIZZAS = gql`
   query {
     pizzas {
       _id
@@ -15,24 +16,25 @@ const GET_PIZZAS = gql`
       img
       price
     }
+    currency @client
   }
 `;
 
-const PizzaMenu = () => (
-  <Query query={GET_PIZZAS}>
-    {({ loading, error, data }) => {
-      if (loading) return <Spinner />;
-      if (error) return <ErrorIndicator />;
+const PizzaMenu = () => {
+  const { loading, data, error } = useQuery(GET_PIZZAS);
+  if (loading) return <Spinner />;
+  if (error) return <ErrorIndicator />;
 
-      return (
-        <div className={classes.PizzaMenu}>
-          <PizzaList data={data} />
-          {/* TODO: if any pizza in cart show order button */}
-          <button className="btn btn-success">Order now</button>
-        </div>
-      );
-    }}
-  </Query>
-);
+  return (
+    <div className={classes.PizzaMenu}>
+      <div className={classes.MenuToolbar}>
+        <CurrencyToggle />
+      </div>
+      <PizzaList data={data} currency={data.currency} />
+      {/* TODO: if any pizza in cart show order button */}
+      <button className="btn btn-success">Order now</button>
+    </div>
+  );
+};
 
 export default PizzaMenu;

@@ -1,3 +1,9 @@
-.content {
-  margin-top: 72px;
+.Content {
+  margin: 72px auto 0 auto;
+}
+
+@media (min-width: 500px) {
+  .Content {
+    width: 80vw;
+  }
 }
