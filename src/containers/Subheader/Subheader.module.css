@@ -1,0 +1,19 @@
+.Subheader {
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+}
+
+.Title {
+  font-size: 3rem;
+  margin: 0;
+}
+
+@media (min-width: 700px) {
+  .Subheader {
+    flex-flow: row;
+  }
+  .Title {
+    margin-right: auto;
+  }
+}

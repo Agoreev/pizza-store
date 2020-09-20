@@ -1,25 +1,29 @@
 import React from "react";
-import classes from "./pizza-controls.module.css";
+import classes from "./cart-controls.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const PizzaControls = ({ count, onRemoveFromCart, onChangeCount, pizzaId }) => {
+const CartControls = ({ count, toggleCart, pizzaId, price }) => {
   return (
     <div className={classes.PizzaControls}>
       <button
         className="icon-button"
-        onChangeCount={() => onChangeCount(pizzaId, -1)}
+        onClick={() =>
+          toggleCart({ variables: { pizzaId, count: count - 1, price } })
+        }
       >
         <FontAwesomeIcon icon="minus" />
       </button>
-      <span>{count}</span>
+      <span className={classes.Count}>{count}</span>
       <button
-        onChangeCount={() => onChangeCount(pizzaId, 1)}
+        onClick={() =>
+          toggleCart({ variables: { pizzaId, count: count + 1, price } })
+        }
         className="icon-button"
       >
         <FontAwesomeIcon icon="plus" />
       </button>
       <button
-        onRemoveFromCart={() => onRemoveFromCart(pizzaId)}
+        onClick={() => toggleCart({ variables: { pizzaId, count: 0, price } })}
         className="icon-button"
       >
         <FontAwesomeIcon icon="trash-alt" />
@@ -28,4 +32,4 @@ const PizzaControls = ({ count, onRemoveFromCart, onChangeCount, pizzaId }) => {
   );
 };
 
-export default PizzaControls;
+export default CartControls;

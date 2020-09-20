@@ -1,19 +1,13 @@
 import React from "react";
-import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo";
 import { GET_PIZZAS } from "../../PizzaMenu";
+import { TOGGLE_CART } from "../../../Cart/Cart";
+import Price from "../../../../components/price";
 import classes from "./pizza-item.module.css";
 
-const TOGGLE_CART = gql`
-  mutation addOrRemoveFromCart($pizzaId: ID!) {
-    addOrRemoveFromCart(pizzaId: $pizzaId) @client
-  }
-`;
-
 const PizzaItem = ({ pizza, currency, eurRate }) => {
-  const { name, description, img, price } = pizza;
-  const [toggleCart, { loading, error }] = useMutation(TOGGLE_CART, {
-    variables: { pizzaId: pizza._id },
+  const { _id, name, description, img, price, isInCart } = pizza;
+  const [toggleCart] = useMutation(TOGGLE_CART, {
     refetchQueries: [
       {
         query: GET_PIZZAS,
@@ -28,10 +22,19 @@ const PizzaItem = ({ pizza, currency, eurRate }) => {
         <p className={classes.Description}>{description}</p>
       </main>
       <footer className={classes.Footer}>
-        <span className={classes.Price}>
-          {currency === "$" ? price : (price * eurRate).toFixed(2)} {currency}
-        </span>
-        <button className="button" onClick={() => toggleCart()}>
+        <Price currency={currency} price={price} rate={eurRate} />
+        <button
+          className="button"
+          onClick={() =>
+            toggleCart({
+              variables: {
+                pizzaId: _id,
+                count: isInCart ? 0 : 1,
+                price: price,
+              },
+            })
+          }
+        >
           {pizza.isInCart ? "Remove from Cart" : "Add to Cart"}
         </button>
       </footer>

@@ -1,11 +1,16 @@
 import { gql } from "apollo-boost";
-import { GET_CART_ITEMS } from "./containers/Cart/Cart";
 
 export const typeDefs = gql`
   extend type Query {
     isLooggedIn: Boolean!
-    cartItems: [ID!]!
+    cartItems: [CartItem!]!
+    totalPrice: Float!
     currency: String!
+  }
+
+  type CartItem {
+    pizzaId: ID!
+    count: Int!
   }
 
   extend type Pizza {
@@ -13,7 +18,15 @@ export const typeDefs = gql`
   }
 
   extend type Mutation {
-    addOrRemoveFromCart(id: ID!): ID
+    addOrRemoveFromCart(pizzaId: ID!): ID
+    changeCountInCart(pizzaId: ID!, count: Int!): ID
+  }
+`;
+
+const GET_CART_ITEMS = gql`
+  query {
+    cartItems @client
+    totalPrice @client
   }
 `;
 
@@ -23,27 +36,52 @@ export const resolvers = {
       const queryResult = cache.readQuery({
         query: GET_CART_ITEMS,
       });
-      console.log(queryResult);
       if (queryResult) {
-        return queryResult.cartItems.includes(pizza._id);
+        return !!queryResult.cartItems.find(
+          (item) => item.pizzaId === pizza._id
+        );
       }
       return false;
     },
   },
 
   Mutation: {
-    addOrRemoveFromCart: (_, { pizzaId }, { cache }) => {
+    addOrRemoveFromCart: (_, { pizzaId, count, price }, { cache }) => {
       const queryResult = cache.readQuery({
         query: GET_CART_ITEMS,
       });
       if (queryResult) {
         const { cartItems } = queryResult;
 
+        let newCartItems = null;
+        if (count <= 0) {
+          newCartItems = cartItems.filter((item) => item.pizzaId !== pizzaId);
+        } else {
+          const itemIdx = cartItems.findIndex(
+            (item) => item.pizzaId === pizzaId
+          );
+          if (itemIdx !== -1) {
+            const newItem = { pizzaId, count, price };
+            newCartItems = [
+              ...cartItems.slice(0, itemIdx),
+              newItem,
+              ...cartItems.slice(itemIdx + 1),
+            ];
+          } else {
+            const newItem = { pizzaId, count, price };
+            newCartItems = [...cartItems, newItem];
+          }
+        }
+
+        const totalPrice = newCartItems.reduce((sum, item) => {
+          return sum + item.price * item.count;
+        }, 0);
+
         const data = {
-          cartItems: cartItems.includes(pizzaId)
-            ? cartItems.filter((item) => item !== pizzaId)
-            : [...cartItems, pizzaId],
+          cartItems: newCartItems,
+          totalPrice: totalPrice.toFixed(2),
         };
+
         cache.writeQuery({ query: GET_CART_ITEMS, data });
         return data.cartItems;
       }

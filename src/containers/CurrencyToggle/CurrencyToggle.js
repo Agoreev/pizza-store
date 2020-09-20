@@ -1,9 +1,17 @@
 import React from "react";
-import classes from "./Currency-toggle.module.css";
+import { gql } from "apollo-boost";
 import { useApolloClient } from "react-apollo";
+import classes from "./CurrencyToggle.module.css";
 
-const CurrencyToggle = ({ currentCurrency }) => {
+const CurrencyToggle = () => {
   const client = useApolloClient();
+  const { currency } = client.readQuery({
+    query: gql`
+      query {
+        currency
+      }
+    `,
+  });
   const onCurrencyChange = (currentCurrency) => {
     client.writeData({
       data: {
@@ -16,11 +24,11 @@ const CurrencyToggle = ({ currentCurrency }) => {
     <div className={classes.CurrencyToggle}>
       <button
         className={"button " + classes.ToggleButton}
-        onClick={() => onCurrencyChange(currentCurrency)}
+        onClick={() => onCurrencyChange(currency)}
       >
         Change currency to
         <span className={classes.CurrencySign}>
-          {currentCurrency === "$" ? "€" : "$"}
+          {currency === "$" ? "€" : "$"}
         </span>
       </button>
     </div>

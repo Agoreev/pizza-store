@@ -1,7 +1,2 @@
 .PizzaMenu {
 }
-
-.MenuToolbar {
-  display: flex;
-  flex-direction: row-reverse;
-}

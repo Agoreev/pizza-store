@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 import Layout from "./containers/Layout";
 import PizzaMenu from "./containers/PizzaMenu";
 import Logout from "./containers/Auth/Logout";
+import Cart from "./containers/Cart";
 import { resolvers, typeDefs } from "./resolvers";
 import "./App.css";
 
@@ -24,6 +25,7 @@ cache.writeData({
     isLoggedIn: !!Cookies.get("token"),
     cartItems: [],
     currency: "$",
+    totalPrice: 0,
   },
 });
 
@@ -42,7 +44,7 @@ const App = () => {
           <Layout>
             <Switch>
               <Route path="/" component={PizzaMenu} exact />
-              <Route path="cart" />
+              <Route path="/cart" component={Cart} />
               <Route path="/orders" />
               <Route path="/auth" />
               <Route path="/logout" component={Logout} />

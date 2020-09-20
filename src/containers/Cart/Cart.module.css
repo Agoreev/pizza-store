@@ -1,0 +1,10 @@
+@media (min-width: 500px) {
+  .Cart {
+    width: 600px;
+    margin: 0 auto;
+  }
+}
+
+.NoItemsText {
+  font-size: 1.7rem;
+}

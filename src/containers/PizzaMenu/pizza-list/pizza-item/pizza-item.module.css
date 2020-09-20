@@ -19,9 +19,11 @@
   transition: transform 1s ease-out;
 }
 
-.Image:hover {
-  cursor: pointer;
-  transform: rotate(30deg);
+@media (min-width: 900px) {
+  .Image:hover {
+    cursor: pointer;
+    transform: rotate(30deg);
+  }
 }
 
 .Name {
@@ -37,10 +39,4 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.Price {
-  font-weight: 600;
-  font-size: 2rem;
-  line-height: 1;
 }
