@@ -1,16 +1,8 @@
 import React from "react";
-import classes from "./currency-toggle.module.css";
-import { gql } from "apollo-boost";
-import { useApolloClient, useQuery } from "react-apollo";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesomee";
+import classes from "./Currency-toggle.module.css";
+import { useApolloClient } from "react-apollo";
 
-export const GET_CURRENCY = gql`
-  query currencyQuery {
-    currency @client
-  }
-`;
-
-const CurrencyToggle = () => {
+const CurrencyToggle = ({ currentCurrency }) => {
   const client = useApolloClient();
   const onCurrencyChange = (currentCurrency) => {
     client.writeData({
@@ -19,19 +11,16 @@ const CurrencyToggle = () => {
       },
     });
   };
-  const currentCurrency = useQuery(GET_CURRENCY);
+
   return (
     <div className={classes.CurrencyToggle}>
       <button
-        className="icon-button"
+        className={"button " + classes.ToggleButton}
         onClick={() => onCurrencyChange(currentCurrency)}
       >
-        <span className={currentCurrency === "$" ? classes.Active : null}>
-          $
-        </span>
-        <FontAwesomeIcon icon="exchange-alt" />
-        <span className={currentCurrency === "€" ? classes.Active : null}>
-          €
+        Change currency to
+        <span className={classes.CurrencySign}>
+          {currentCurrency === "$" ? "€" : "$"}
         </span>
       </button>
     </div>

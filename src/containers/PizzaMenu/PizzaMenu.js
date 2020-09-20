@@ -2,7 +2,7 @@ import React from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo";
 import PizzaList from "./pizza-list";
-import CurrencyToggle from "../../containers/currency-toggle";
+import CurrencyToggle from "../Currency-toggle";
 import Spinner from "../../components/ui/spinner";
 import ErrorIndicator from "../../components/ui/error-indicator";
 import classes from "./PizzaMenu.module.css";
@@ -15,8 +15,10 @@ export const GET_PIZZAS = gql`
       description
       img
       price
+      isInCart @client
     }
     currency @client
+    EURRate
   }
 `;
 
@@ -28,9 +30,9 @@ const PizzaMenu = () => {
   return (
     <div className={classes.PizzaMenu}>
       <div className={classes.MenuToolbar}>
-        <CurrencyToggle />
+        <CurrencyToggle currentCurrency={data.currency} />
       </div>
-      <PizzaList data={data} currency={data.currency} />
+      <PizzaList data={data} currency={data.currency} eurRate={data.EURRate} />
       {/* TODO: if any pizza in cart show order button */}
       <button className="btn btn-success">Order now</button>
     </div>

@@ -10,7 +10,7 @@ const TOGGLE_CART = gql`
   }
 `;
 
-const PizzaItem = ({ pizza, currency }) => {
+const PizzaItem = ({ pizza, currency, eurRate }) => {
   const { name, description, img, price } = pizza;
   const [toggleCart, { loading, error }] = useMutation(TOGGLE_CART, {
     variables: { pizzaId: pizza._id },
@@ -29,7 +29,7 @@ const PizzaItem = ({ pizza, currency }) => {
       </main>
       <footer className={classes.Footer}>
         <span className={classes.Price}>
-          {price} {currency}
+          {currency === "$" ? price : (price * eurRate).toFixed(2)} {currency}
         </span>
         <button className="button" onClick={() => toggleCart()}>
           {pizza.isInCart ? "Remove from Cart" : "Add to Cart"}

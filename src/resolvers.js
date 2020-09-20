@@ -1,5 +1,5 @@
 import { gql } from "apollo-boost";
-import { GET_CART_ITEMS } from "./containers/Cart";
+import { GET_CART_ITEMS } from "./containers/Cart/Cart";
 
 export const typeDefs = gql`
   extend type Query {
@@ -13,7 +13,7 @@ export const typeDefs = gql`
   }
 
   extend type Mutation {
-    addorRemoveFromCart(id: ID!): ID
+    addOrRemoveFromCart(id: ID!): ID
   }
 `;
 
@@ -23,6 +23,7 @@ export const resolvers = {
       const queryResult = cache.readQuery({
         query: GET_CART_ITEMS,
       });
+      console.log(queryResult);
       if (queryResult) {
         return queryResult.cartItems.includes(pizza._id);
       }
@@ -31,11 +32,10 @@ export const resolvers = {
   },
 
   Mutation: {
-    addorRemoveFromCart: (_, { pizzaId }, { cache }) => {
+    addOrRemoveFromCart: (_, { pizzaId }, { cache }) => {
       const queryResult = cache.readQuery({
         query: GET_CART_ITEMS,
       });
-
       if (queryResult) {
         const { cartItems } = queryResult;
 
