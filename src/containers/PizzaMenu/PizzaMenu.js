@@ -32,12 +32,12 @@ const PizzaMenu = () => {
   const cartButton =
     data.cartItems && data.cartItems.length ? (
       <CartButton
-        itemsCount={(data.cartItems.reduce((sum, item) => sum + item.count), 0)}
+        itemsCount={data.cartItems.reduce((sum, item) => sum + item.count, 0)}
       />
     ) : null;
   return (
     <section className={classes.PizzaMenu}>
-      <Subheader title="Pizza menu" />
+      <Subheader title="Pizza menu">{cartButton}</Subheader>
       <PizzaList
         data={data}
         currency={data.currency}
@@ -46,7 +46,6 @@ const PizzaMenu = () => {
       />
 
       <button className="btn btn-success">Order now</button>
-      {cartButton}
     </section>
   );
 };

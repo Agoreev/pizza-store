@@ -12,7 +12,7 @@ import {
   faSignInAlt,
   faPizzaSlice,
   faCartPlus,
-  faCartArrowDown,
+  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
 import Layout from "./containers/Layout";
@@ -32,7 +32,7 @@ library.add(
   faSignInAlt,
   faPizzaSlice,
   faCartPlus,
-  faCartArrowDown
+  faArrowLeft
 );
 
 const cache = new InMemoryCache();

@@ -68,9 +68,11 @@ const Cart = () => {
               rate={data.EURRate}
             />
           </h3>
-          <Link className="button" to="/checkout">
-            ORDER NOW
-          </Link>
+          <footer className={classes.Footer}>
+            <Link className="button" to="/checkout">
+              ORDER NOW
+            </Link>
+          </footer>
         </Fragment>
       )}
     </section>

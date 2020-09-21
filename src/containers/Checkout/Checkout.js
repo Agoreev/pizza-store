@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 import Input from "../../components/ui/input";
 import OrderSummary from "./OrderSummary";
 import { Query } from "react-apollo";
@@ -6,6 +8,7 @@ import { GET_CART_ITEMS } from "../Cart/Cart";
 import Spinner from "../../components/ui/spinner";
 import Subheader from "../Subheader";
 import ErrorIndicator from "../../components/ui/error-indicator";
+
 import classes from "./Checkout.module.css";
 
 class Checkout extends Component {
@@ -201,9 +204,14 @@ class Checkout extends Component {
         {({ data, loading, error }) => {
           if (loading) return <Spinner />;
           if (error) return <ErrorIndicator />;
-          //TODO: Back to cart
+
           return (
             <div className={classes.Checkout}>
+              <Link to="/cart" className={classes.EditCartBtn}>
+                <FontAwesomeIcon icon="arrow-left" />
+                &nbsp;Edit cart&nbsp;
+                <FontAwesomeIcon icon="shopping-cart" />
+              </Link>
               <Subheader title="Checkout" />
               <OrderSummary
                 cartItems={data.cartItems}
