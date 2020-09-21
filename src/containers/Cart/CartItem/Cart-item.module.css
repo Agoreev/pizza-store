@@ -11,9 +11,14 @@
 }
 
 .Name {
-  font-size: 2rem;
+  font-size: 1.8rem;
+  font-weight: 400;
   flex: 1 1 auto;
   margin-left: 15px;
+}
+
+.Count {
+  font-size: 1.8rem;
 }
 
 .Price {

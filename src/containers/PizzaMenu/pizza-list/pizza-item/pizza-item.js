@@ -1,11 +1,13 @@
 import React from "react";
 import { useMutation } from "react-apollo";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GET_PIZZAS } from "../../PizzaMenu";
 import { TOGGLE_CART } from "../../../Cart/Cart";
 import Price from "../../../../components/price";
+import CartControls from "../../../../components/cart-controls";
 import classes from "./pizza-item.module.css";
 
-const PizzaItem = ({ pizza, currency, eurRate }) => {
+const PizzaItem = ({ pizza, currency, eurRate, cartItem }) => {
   const { _id, name, description, img, price, isInCart } = pizza;
   const [toggleCart] = useMutation(TOGGLE_CART, {
     refetchQueries: [
@@ -14,6 +16,31 @@ const PizzaItem = ({ pizza, currency, eurRate }) => {
       },
     ],
   });
+
+  const controls = isInCart ? (
+    <CartControls
+      count={cartItem ? cartItem.count : 0}
+      toggleCart={toggleCart}
+      pizzaId={_id}
+      price={price}
+      showRemoveIcon={false}
+    />
+  ) : (
+    <button
+      className="button"
+      onClick={() =>
+        toggleCart({
+          variables: {
+            pizzaId: _id,
+            count: 1,
+            price: price,
+          },
+        })
+      }
+    >
+      <FontAwesomeIcon icon="cart-plus" /> Add to Cart
+    </button>
+  );
   return (
     <article className={classes.Pizza}>
       <main>
@@ -23,20 +50,7 @@ const PizzaItem = ({ pizza, currency, eurRate }) => {
       </main>
       <footer className={classes.Footer}>
         <Price currency={currency} price={price} rate={eurRate} />
-        <button
-          className="button"
-          onClick={() =>
-            toggleCart({
-              variables: {
-                pizzaId: _id,
-                count: isInCart ? 0 : 1,
-                price: price,
-              },
-            })
-          }
-        >
-          {pizza.isInCart ? "Remove from Cart" : "Add to Cart"}
-        </button>
+        {controls}
       </footer>
     </article>
   );

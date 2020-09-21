@@ -1,9 +1,11 @@
-.PizzaControls {
+.CartControls {
   display: flex;
   align-items: center;
 }
 
 .Count {
-  font-size: 2rem;
+  font-size: 1.8rem;
+  font-weight: 400;
   width: 15px;
+  text-align: center;
 }

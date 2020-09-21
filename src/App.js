@@ -8,16 +8,32 @@ import {
   faMinus,
   faTrashAlt,
   faExchangeAlt,
+  faShoppingCart,
+  faSignInAlt,
+  faPizzaSlice,
+  faCartPlus,
+  faCartArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
 import Layout from "./containers/Layout";
 import PizzaMenu from "./containers/PizzaMenu";
 import Logout from "./containers/Auth/Logout";
 import Cart from "./containers/Cart";
+import Checkout from "./containers/Checkout";
 import { resolvers, typeDefs } from "./resolvers";
 import "./App.css";
 
-library.add(faPlus, faMinus, faTrashAlt, faExchangeAlt);
+library.add(
+  faPlus,
+  faMinus,
+  faTrashAlt,
+  faExchangeAlt,
+  faShoppingCart,
+  faSignInAlt,
+  faPizzaSlice,
+  faCartPlus,
+  faCartArrowDown
+);
 
 const cache = new InMemoryCache();
 cache.writeData({
@@ -45,6 +61,7 @@ const App = () => {
             <Switch>
               <Route path="/" component={PizzaMenu} exact />
               <Route path="/cart" component={Cart} />
+              <Route path="/checkout" component={Checkout} />
               <Route path="/orders" />
               <Route path="/auth" />
               <Route path="/logout" component={Logout} />

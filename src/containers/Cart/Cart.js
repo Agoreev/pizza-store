@@ -10,7 +10,7 @@ import CartItem from "./CartItem";
 import Subheader from "../Subheader";
 import classes from "./Cart.module.css";
 
-const GET_CART_ITEMS = gql`
+export const GET_CART_ITEMS = gql`
   query {
     cartItems @client
     currency @client
@@ -61,7 +61,7 @@ const Cart = () => {
               />
             ))}
           <h3 className={classes.TotalPrice}>
-            Total price:{" "}
+            Total price:&nbsp;
             <Price
               currency={data.currency}
               price={data.totalPrice}

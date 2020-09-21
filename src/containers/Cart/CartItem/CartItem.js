@@ -19,7 +19,7 @@ const GET_PIZZA_BY_ID = gql`
   }
 `;
 
-const CartItem = ({ item, toggleCart, currency, rate }) => {
+const CartItem = ({ item, toggleCart, currency, rate, withoutControls }) => {
   const { data, loading, error } = useQuery(GET_PIZZA_BY_ID, {
     variables: { pizzaId: item.pizzaId },
   });
@@ -32,13 +32,18 @@ const CartItem = ({ item, toggleCart, currency, rate }) => {
     <article className={classes.CartItem}>
       <img src={pizza.img} className={classes.Img} alt={pizza.name} />
       <h3 className={classes.Name}>{pizza.name}</h3>
+      {withoutControls ? (
+        <span className={classes.Count}>{item.count}</span>
+      ) : (
+        <CartControls
+          pizzaId={pizza._id}
+          count={item.count}
+          price={item.price}
+          toggleCart={toggleCart}
+          showRemoveIcon={true}
+        />
+      )}
 
-      <CartControls
-        pizzaId={pizza._id}
-        count={item.count}
-        price={item.price}
-        toggleCart={toggleCart}
-      />
       <div className={classes.Price}>
         <Price
           currency={currency}
