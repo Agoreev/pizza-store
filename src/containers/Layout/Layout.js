@@ -1,49 +1,40 @@
-import React, { Component, Fragment } from "react";
-import { gql } from "apollo-boost";
-import { Query } from "react-apollo";
+import React, { Fragment, useState } from "react";
+import { useQuery, useApolloClient } from "react-apollo";
 import classes from "./Layout.module.css";
 import Toolbar from "../../components/navigation/toolbar";
 import SideDrawer from "../../components/navigation/side-drawer";
+import { CURRENT_USER_QUERY } from "../../queries";
 
-const IS_LOGGED_IN = gql`
-  query {
-    isLoggedIn @client
-  }
-`;
+const Layout = ({ children }) => {
+  const [showSideDrawer, setShowSideDrawer] = useState(false);
 
-class Layout extends Component {
-  state = {
-    showSideDrawer: false,
+  const sideDrawerToggleHandler = () => {
+    setShowSideDrawer(!showSideDrawer);
   };
+  const { data } = useQuery(CURRENT_USER_QUERY);
+  const client = useApolloClient();
 
-  sideDrawerToggleHandler = () => {
-    this.setState((state) => {
-      return { showSideDrawer: !state.showSideDrawer };
+  if (!!data && data.me) {
+    client.writeData({
+      data: {
+        isLoggedIn: true,
+      },
     });
-  };
-  render() {
-    const { children } = this.props;
-    return (
-      <Query query={IS_LOGGED_IN}>
-        {({ data }) => {
-          return (
-            <Fragment>
-              <Toolbar
-                isAuthenticated={data.isLoggedIn}
-                sideDrawerOpen={this.sideDrawerToggleHandler}
-              />
-              <SideDrawer
-                isAuthenticated={data.isLoggedIn}
-                closed={this.sideDrawerToggleHandler}
-                open={this.state.showSideDrawer}
-              />
-              <main className={classes.Content}>{children}</main>
-            </Fragment>
-          );
-        }}
-      </Query>
-    );
   }
-}
+  return (
+    <Fragment>
+      <Toolbar
+        isAuthenticated={!!data && data.me}
+        sideDrawerOpen={sideDrawerToggleHandler}
+      />
+      <SideDrawer
+        isAuthenticated={!!data && data.me}
+        closed={sideDrawerToggleHandler}
+        open={showSideDrawer}
+      />
+      <main className={classes.Content}>{children}</main>
+    </Fragment>
+  );
+};
 
 export default Layout;

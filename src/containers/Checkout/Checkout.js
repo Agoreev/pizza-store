@@ -7,7 +7,7 @@ import OrderSummary from "./OrderSummary";
 import { Query, Mutation } from "react-apollo";
 import { GET_CART_ITEMS } from "../Cart/Cart";
 import { ADD_ORDER, SIGN_IN } from "../../mutations";
-
+import { CURRENT_USER_QUERY } from "../../queries";
 import Spinner from "../../components/ui/spinner";
 import Subheader from "../Subheader";
 import ErrorIndicator from "../../components/ui/error-indicator";
@@ -138,6 +138,9 @@ class Checkout extends Component {
           phone: formData.phone,
           name: formData.name,
         },
+        refetchQueries: {
+          query: CURRENT_USER_QUERY,
+        },
       });
     }
 
@@ -152,7 +155,7 @@ class Checkout extends Component {
       ...formData,
       ...orderDetails,
     };
-    console.log(order);
+
     //4. Send order to the server
     const newOrder = await addOrderMutation({
       variables: {
@@ -166,7 +169,7 @@ class Checkout extends Component {
           },
         });
       },
-      //TODO refetch orders query
+      //TODO refetch orders query and cartItems query
     });
 
     //5. Redirect to order success page

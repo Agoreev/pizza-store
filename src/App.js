@@ -14,13 +14,13 @@ import {
   faCartPlus,
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import Cookies from "js-cookie";
 import Layout from "./containers/Layout";
 import PizzaMenu from "./containers/PizzaMenu";
 import Logout from "./containers/Auth/Logout";
 import Cart from "./containers/Cart";
 import Checkout from "./containers/Checkout";
 import { resolvers, typeDefs } from "./resolvers";
+
 import "./App.css";
 
 library.add(
@@ -38,7 +38,7 @@ library.add(
 const cache = new InMemoryCache();
 cache.writeData({
   data: {
-    isLoggedIn: !!Cookies.get("token"),
+    isLoggedIn: false,
     cartItems: [],
     currency: "$",
     totalPrice: 0,
@@ -47,6 +47,7 @@ cache.writeData({
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+  credentials: "include",
   typeDefs,
   resolvers,
   cache,
