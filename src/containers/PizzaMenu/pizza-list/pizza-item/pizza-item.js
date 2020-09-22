@@ -1,23 +1,16 @@
 import React from "react";
 import { useMutation } from "react-apollo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { GET_PIZZAS } from "../../PizzaMenu";
-import { TOGGLE_CART } from "../../../Cart/Cart";
+import { TOGGLE_CART } from "../../../../mutations";
 import Price from "../../../../components/price";
 import CartControls from "../../../../components/cart-controls";
 import classes from "./pizza-item.module.css";
 
 const PizzaItem = ({ pizza, currency, eurRate, cartItem }) => {
-  const { _id, name, description, img, price, isInCart } = pizza;
-  const [toggleCart] = useMutation(TOGGLE_CART, {
-    refetchQueries: [
-      {
-        query: GET_PIZZAS,
-      },
-    ],
-  });
+  const { _id, name, description, img, price } = pizza;
+  const [toggleCart] = useMutation(TOGGLE_CART);
 
-  const controls = isInCart ? (
+  const controls = cartItem ? (
     <CartControls
       count={cartItem ? cartItem.count : 0}
       toggleCart={toggleCart}

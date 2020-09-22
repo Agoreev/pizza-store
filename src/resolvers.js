@@ -13,13 +13,8 @@ export const typeDefs = gql`
     count: Int!
   }
 
-  extend type Pizza {
-    isInCart: Boolean!
-  }
-
   extend type Mutation {
     addOrRemoveFromCart(pizzaId: ID!): ID
-    changeCountInCart(pizzaId: ID!, count: Int!): ID
   }
 `;
 
@@ -31,20 +26,6 @@ const GET_CART_ITEMS = gql`
 `;
 
 export const resolvers = {
-  Pizza: {
-    isInCart: (pizza, _, { cache }) => {
-      const queryResult = cache.readQuery({
-        query: GET_CART_ITEMS,
-      });
-      if (queryResult) {
-        return !!queryResult.cartItems.find(
-          (item) => item.pizzaId === pizza._id
-        );
-      }
-      return false;
-    },
-  },
-
   Mutation: {
     addOrRemoveFromCart: (_, { pizzaId, count, price }, { cache }) => {
       const queryResult = cache.readQuery({

@@ -1,33 +1,22 @@
 import React, { Fragment } from "react";
-import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "react-apollo";
 import { Link } from "react-router-dom";
 import Price from "../../components/price";
-import { GET_PIZZAS } from "../PizzaMenu/PizzaMenu";
+import { GET_PIZZAS, GET_CART_ITEMS } from "../../queries";
+import { TOGGLE_CART } from "../../mutations";
 import Spinner from "../../components/ui/spinner";
 import ErrorIndicator from "../../components/ui/error-indicator";
 import CartItem from "./CartItem";
 import Subheader from "../Subheader";
 import classes from "./Cart.module.css";
 
-export const GET_CART_ITEMS = gql`
-  query {
-    cartItems @client
-    currency @client
-    totalPrice @client
-    isLoggedIn @client
-    EURRate
-  }
-`;
-
-export const TOGGLE_CART = gql`
-  mutation addOrRemoveFromCart($pizzaId: ID!, $count: Int, $price: Float!) {
-    addOrRemoveFromCart(pizzaId: $pizzaId, count: $count, price: $price) @client
-  }
-`;
-
 const Cart = () => {
-  const { data, loading, error } = useQuery(GET_CART_ITEMS);
+  const {
+    data: { cartItems, totalPrice, currency, EURRate },
+    loading,
+    error,
+  } = useQuery(GET_CART_ITEMS);
+
   const [toggleCart] = useMutation(TOGGLE_CART, {
     refetchQueries: [
       {
@@ -42,7 +31,7 @@ const Cart = () => {
   return (
     <section className={classes.Cart}>
       <Subheader title="Your cart" />
-      {!data || (!!data && data.cartItems.length === 0) ? (
+      {cartItems.length === 0 ? (
         <Fragment>
           <p className={classes.NoItemsText}>No pizza in your cart yet</p>
           <Link className="button" to="/">
@@ -51,23 +40,18 @@ const Cart = () => {
         </Fragment>
       ) : (
         <Fragment>
-          {!!data &&
-            data.cartItems.map((item) => (
-              <CartItem
-                key={item.pizzaId}
-                item={item}
-                toggleCart={toggleCart}
-                currency={data.currency}
-                rate={data.EURRate}
-              />
-            ))}
+          {cartItems.map((item) => (
+            <CartItem
+              key={item.pizzaId}
+              item={item}
+              toggleCart={toggleCart}
+              currency={currency}
+              rate={EURRate}
+            />
+          ))}
           <h3 className={classes.TotalPrice}>
             Total price:&nbsp;
-            <Price
-              currency={data.currency}
-              price={data.totalPrice}
-              rate={data.EURRate}
-            />
+            <Price currency={currency} price={totalPrice} rate={EURRate} />
           </h3>
           <footer className={classes.Footer}>
             <Link className="button" to="/checkout">

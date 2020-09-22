@@ -15,3 +15,9 @@ export const SIGN_IN = gql`
     }
   }
 `;
+
+export const TOGGLE_CART = gql`
+  mutation addOrRemoveFromCart($pizzaId: ID!, $count: Int, $price: Float!) {
+    addOrRemoveFromCart(pizzaId: $pizzaId, count: $count, price: $price) @client
+  }
+`;

@@ -1,6 +1,6 @@
 import React from "react";
-import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo";
+import { GET_PIZZAS, GET_CART_ITEMS } from "../../queries";
 import PizzaList from "./pizza-list";
 import Subheader from "../Subheader";
 import Spinner from "../../components/ui/spinner";
@@ -8,31 +8,21 @@ import ErrorIndicator from "../../components/ui/error-indicator";
 import CartButton from "../../components/cart-button";
 import classes from "./PizzaMenu.module.css";
 
-export const GET_PIZZAS = gql`
-  query {
-    pizzas {
-      _id
-      name
-      description
-      img
-      price
-      isInCart @client
-    }
-    currency @client
-    cartItems @client
-    EURRate
-  }
-`;
-
 const PizzaMenu = () => {
   const { loading, data, error } = useQuery(GET_PIZZAS);
+  const { data: cartData, loading: cartLoading, error: cartError } = useQuery(
+    GET_CART_ITEMS
+  );
 
-  if (loading) return <Spinner />;
-  if (error) return <ErrorIndicator />;
+  if (loading || cartLoading) return <Spinner />;
+  if (error || cartError) return <ErrorIndicator />;
   const cartButton =
-    data.cartItems && data.cartItems.length ? (
+    cartData.cartItems && cartData.cartItems.length ? (
       <CartButton
-        itemsCount={data.cartItems.reduce((sum, item) => sum + item.count, 0)}
+        itemsCount={cartData.cartItems.reduce(
+          (sum, item) => sum + item.count,
+          0
+        )}
       />
     ) : null;
   return (
@@ -40,9 +30,9 @@ const PizzaMenu = () => {
       <Subheader title="Pizza menu">{cartButton}</Subheader>
       <PizzaList
         data={data}
-        currency={data.currency}
-        eurRate={data.EURRate}
-        cartItems={data.cartItems}
+        currency={cartData.currency}
+        eurRate={cartData.EURRate}
+        cartItems={cartData.cartItems}
       />
 
       <button className="btn btn-success">Order now</button>

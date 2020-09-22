@@ -12,6 +12,7 @@ const Layout = ({ children }) => {
     setShowSideDrawer(!showSideDrawer);
   };
   const { data } = useQuery(CURRENT_USER_QUERY);
+
   const client = useApolloClient();
 
   if (!!data && data.me) {
@@ -21,6 +22,7 @@ const Layout = ({ children }) => {
       },
     });
   }
+
   return (
     <Fragment>
       <Toolbar

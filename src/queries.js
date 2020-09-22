@@ -9,3 +9,25 @@ export const CURRENT_USER_QUERY = gql`
     }
   }
 `;
+
+export const GET_PIZZAS = gql`
+  query {
+    pizzas {
+      _id
+      name
+      description
+      img
+      price
+    }
+  }
+`;
+
+export const GET_CART_ITEMS = gql`
+  query {
+    isLoggedIn @client
+    cartItems @client
+    totalPrice @client
+    currency @client
+    EURRate
+  }
+`;

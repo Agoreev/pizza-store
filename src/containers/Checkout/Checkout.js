@@ -5,13 +5,11 @@ import { withRouter, Redirect } from "react-router-dom";
 import Input from "../../components/ui/input";
 import OrderSummary from "./OrderSummary";
 import { Query, Mutation } from "react-apollo";
-import { GET_CART_ITEMS } from "../Cart/Cart";
+import { GET_CART_ITEMS, CURRENT_USER_QUERY } from "../../queries";
 import { ADD_ORDER, SIGN_IN } from "../../mutations";
-import { CURRENT_USER_QUERY } from "../../queries";
 import Spinner from "../../components/ui/spinner";
 import Subheader from "../Subheader";
 import ErrorIndicator from "../../components/ui/error-indicator";
-
 import classes from "./Checkout.module.css";
 
 class Checkout extends Component {
@@ -169,7 +167,7 @@ class Checkout extends Component {
           },
         });
       },
-      //TODO refetch orders query and cartItems query
+      //TODO refetch orders query
     });
 
     //5. Redirect to order success page
