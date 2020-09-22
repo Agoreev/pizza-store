@@ -1,10 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import Input from "../../components/ui/input";
 import OrderSummary from "./OrderSummary";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import { GET_CART_ITEMS } from "../Cart/Cart";
+import { ADD_ORDER, SIGN_IN } from "../../mutations";
+
 import Spinner from "../../components/ui/spinner";
 import Subheader from "../Subheader";
 import ErrorIndicator from "../../components/ui/error-indicator";
@@ -68,16 +71,14 @@ class Checkout extends Component {
         touched: false,
       },
       phone: {
-        elType: "input",
+        elType: "maskedInput",
         elConfig: {
           type: "tel",
           placeholder: "Phone",
-          pattern: "+[0-9]{1}-([0-9]{3})-[0-9]{3}-[0-9]{2}-[0-9]{2}",
         },
         value: "",
         validation: {
           required: true,
-          minLength: 11,
           maxLength: 11,
           valid: false,
         },
@@ -115,13 +116,32 @@ class Checkout extends Component {
     formIsValid: false,
   };
 
-  orderHandler = (e, data) => {
+  orderHandler = async (
+    e,
+    data,
+    addOrderMutation,
+    signInMutation,
+    isLoggedIn
+  ) => {
     e.preventDefault();
 
+    //1. Get data from contact form
     const formData = {};
     for (let elId in this.state.orderForm) {
       formData[elId] = this.state.orderForm[elId].value;
     }
+
+    //2. Check if user log in, if not send login request to the server, which put JWT into cookies in response
+    if (!isLoggedIn) {
+      await signInMutation({
+        variables: {
+          phone: formData.phone,
+          name: formData.name,
+        },
+      });
+    }
+
+    //3. Prepare order Object
     const orderDetails = {
       items: data.cartItems,
       currency: data.currency,
@@ -129,11 +149,28 @@ class Checkout extends Component {
       totalPrice: data.totalPrice,
     };
     const order = {
-      contactData: formData,
-      orderDetails,
+      ...formData,
+      ...orderDetails,
     };
+    console.log(order);
+    //4. Send order to the server
+    const newOrder = await addOrderMutation({
+      variables: {
+        order,
+      },
+      update(cache) {
+        cache.writeData({
+          data: {
+            cartItems: [],
+            totalPrice: 0,
+          },
+        });
+      },
+      //TODO refetch orders query
+    });
 
-    //TODO: Order mutation here
+    //5. Redirect to order success page
+    this.props.history.push("/order-success");
   };
 
   checkValidity = (value, validation) => {
@@ -204,9 +241,12 @@ class Checkout extends Component {
         {({ data, loading, error }) => {
           if (loading) return <Spinner />;
           if (error) return <ErrorIndicator />;
-
+          const purchasingRedirect = !data.cartItems.length ? (
+            <Redirect to="/" />
+          ) : null;
           return (
             <div className={classes.Checkout}>
+              {purchasingRedirect}
               <Link to="/cart" className={classes.EditCartBtn}>
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;Edit cart&nbsp;
@@ -221,29 +261,52 @@ class Checkout extends Component {
               />
               <h3>Enter your contact data</h3>
               <form onSubmit={(e) => this.orderHandler(e, data)}>
-                {formElementsArray.map((el) => {
-                  return (
-                    <Input
-                      key={el.id}
-                      elType={el.config.elType}
-                      label={el.id}
-                      value={el.config.value}
-                      elConfig={el.config.elConfig}
-                      changed={(event) =>
-                        this.inputChangedHandler(event, el.id)
-                      }
-                      validation={el.config.validation}
-                      touched={el.config.touched}
-                    />
-                  );
-                })}
-                <button
-                  type="submit"
-                  className="button"
-                  disabled={!this.state.formIsValid}
-                >
-                  ORDER
-                </button>
+                <Mutation mutation={SIGN_IN}>
+                  {(signIn) => {
+                    return (
+                      <Mutation mutation={ADD_ORDER}>
+                        {(addOrder) => {
+                          return (
+                            <Fragment>
+                              {formElementsArray.map((el) => {
+                                return (
+                                  <Input
+                                    key={el.id}
+                                    elType={el.config.elType}
+                                    label={el.id}
+                                    value={el.config.value}
+                                    elConfig={el.config.elConfig}
+                                    changed={(event) =>
+                                      this.inputChangedHandler(event, el.id)
+                                    }
+                                    validation={el.config.validation}
+                                    touched={el.config.touched}
+                                  />
+                                );
+                              })}
+                              <button
+                                type="submit"
+                                className="button"
+                                disabled={!this.state.formIsValid}
+                                onClick={(e) =>
+                                  this.orderHandler(
+                                    e,
+                                    data,
+                                    addOrder,
+                                    signIn,
+                                    data.isLoggedIn
+                                  )
+                                }
+                              >
+                                ORDER
+                              </button>
+                            </Fragment>
+                          );
+                        }}
+                      </Mutation>
+                    );
+                  }}
+                </Mutation>
               </form>
             </div>
           );
@@ -253,4 +316,4 @@ class Checkout extends Component {
   }
 }
 
-export default Checkout;
+export default withRouter(Checkout);

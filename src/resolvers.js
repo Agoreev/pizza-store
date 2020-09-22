@@ -79,7 +79,7 @@ export const resolvers = {
 
         const data = {
           cartItems: newCartItems,
-          totalPrice: totalPrice.toFixed(2),
+          totalPrice: parseFloat(totalPrice.toFixed(2)),
         };
 
         cache.writeQuery({ query: GET_CART_ITEMS, data });

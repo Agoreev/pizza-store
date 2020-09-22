@@ -15,6 +15,7 @@ export const GET_CART_ITEMS = gql`
     cartItems @client
     currency @client
     totalPrice @client
+    isLoggedIn @client
     EURRate
   }
 `;
