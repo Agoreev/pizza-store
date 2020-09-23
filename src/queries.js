@@ -37,3 +37,27 @@ export const GET_CART_ITEMS = gql`
     EURRate
   }
 `;
+
+export const GET_ORDERS = gql`
+  query orders {
+    orders {
+      _id
+      city
+      street
+      house
+      currency
+      rate
+      totalPrice
+      items {
+        pizza {
+          _id
+          name
+          description
+          img
+        }
+        price
+        count
+      }
+    }
+  }
+`;

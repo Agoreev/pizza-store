@@ -11,11 +11,7 @@ import Subheader from "../Subheader";
 import classes from "./Cart.module.css";
 
 const Cart = () => {
-  const {
-    data: { cartItems, totalPrice, currency, EURRate },
-    loading,
-    error,
-  } = useQuery(GET_CART_ITEMS);
+  const { data, loading, error } = useQuery(GET_CART_ITEMS);
 
   const [toggleCart] = useMutation(TOGGLE_CART, {
     refetchQueries: [
@@ -27,6 +23,7 @@ const Cart = () => {
 
   if (loading) return <Spinner />;
   if (error) return <ErrorIndicator />;
+  const { cartItems, totalPrice, currency, EURRate } = data;
 
   return (
     <section className={classes.Cart}>

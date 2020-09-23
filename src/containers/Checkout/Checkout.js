@@ -5,7 +5,7 @@ import { withRouter, Redirect } from "react-router-dom";
 import Input from "../../components/ui/input";
 import OrderSummary from "./OrderSummary";
 import { Query, Mutation } from "react-apollo";
-import { GET_CART_ITEMS, CURRENT_USER_QUERY } from "../../queries";
+import { GET_CART_ITEMS, CURRENT_USER_QUERY, GET_ORDERS } from "../../queries";
 import { ADD_ORDER, SIGN_IN } from "../../mutations";
 import Spinner from "../../components/ui/spinner";
 import Subheader from "../Subheader";
@@ -159,6 +159,9 @@ class Checkout extends Component {
       variables: {
         order,
       },
+      refetchQueries: {
+        query: GET_ORDERS,
+      },
       update(cache) {
         cache.writeData({
           data: {
@@ -167,7 +170,6 @@ class Checkout extends Component {
           },
         });
       },
-      //TODO refetch orders query
     });
 
     //5. Redirect to order success page

@@ -20,6 +20,7 @@ import Logout from "./containers/Auth/Logout";
 import Cart from "./containers/Cart";
 import Checkout from "./containers/Checkout";
 import OrderSuccess from "./containers/OrderSuccess";
+import Orders from "./containers/Orders";
 import { resolvers, typeDefs } from "./resolvers";
 
 import "./App.css";
@@ -65,7 +66,7 @@ const App = () => {
               <Route path="/cart" component={Cart} />
               <Route path="/checkout" component={Checkout} />
               <Route path="/order-success" component={OrderSuccess} />
-              <Route path="/orders" />
+              <Route path="/orders" component={Orders} />
               <Route path="/auth" />
               <Route path="/logout" component={Logout} />
               <Route render={() => <h2>Page not found</h2>} />
