@@ -6,6 +6,7 @@ export const typeDefs = gql`
     cartItems: [CartItem!]!
     totalPrice: Float!
     currency: String!
+    purchased: Boolean!
   }
 
   type CartItem {
@@ -25,6 +26,12 @@ const GET_CART_ITEMS = gql`
   }
 `;
 
+const GET_DELIVERY_COST = gql`
+  query {
+    deliveryCost
+  }
+`;
+
 export const resolvers = {
   Mutation: {
     addOrRemoveFromCart: (_, { pizzaId, count, price }, { cache }) => {
@@ -33,6 +40,12 @@ export const resolvers = {
       });
       if (queryResult) {
         const { cartItems } = queryResult;
+        const deliveryCostQuery = cache.readQuery({
+          query: GET_DELIVERY_COST,
+        });
+        const deliveryCost = deliveryCostQuery
+          ? deliveryCostQuery.deliveryCost
+          : 2;
 
         let newCartItems = null;
         if (count <= 0) {
@@ -56,7 +69,7 @@ export const resolvers = {
 
         const totalPrice = newCartItems.reduce((sum, item) => {
           return sum + item.price * item.count;
-        }, 0);
+        }, deliveryCost);
 
         const data = {
           cartItems: newCartItems,

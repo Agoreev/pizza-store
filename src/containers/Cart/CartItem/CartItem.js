@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo";
 import Price from "../../../components/price";
 import CartControls from "../../../components/cart-controls";
-import Spinner from "../../../components/ui/spinner";
+import SmallSpinner from "../../../components/ui/small-spinner";
 import ErrorIndicator from "../../../components/ui/error-indicator";
 import classes from "./Cart-item.module.css";
 
@@ -24,24 +24,30 @@ const CartItem = ({ item, toggleCart, currency, rate, withoutControls }) => {
     variables: { pizzaId: item.pizzaId },
   });
 
-  if (loading) return <Spinner />;
+  if (loading) return <SmallSpinner />;
   if (error) return <ErrorIndicator />;
   const { pizza } = data;
 
   return (
     <article className={classes.CartItem}>
       <img src={pizza.img} className={classes.Img} alt={pizza.name} />
-      <h3 className={classes.Name}>{pizza.name}</h3>
+
       {withoutControls ? (
-        <span className={classes.Count}>{item.count}</span>
+        <Fragment>
+          <span className={classes.Count}>{item.count}</span>
+          <h3 className={classes.Name}>{pizza.name}</h3>
+        </Fragment>
       ) : (
-        <CartControls
-          pizzaId={pizza._id}
-          count={item.count}
-          price={item.price}
-          toggleCart={toggleCart}
-          showRemoveIcon={true}
-        />
+        <Fragment>
+          <h3 className={classes.Name}>{pizza.name}</h3>
+          <CartControls
+            pizzaId={pizza._id}
+            count={item.count}
+            price={item.price}
+            toggleCart={toggleCart}
+            showRemoveIcon={true}
+          />
+        </Fragment>
       )}
 
       <div className={classes.Price}>

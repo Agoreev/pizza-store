@@ -36,6 +36,14 @@
   font-weight: 600;
   text-align: right;
 }
-.Address {
+.DeliveryCost {
+  margin-top: 10px;
+  display: block;
+  font-size: 1.8rem;
+  text-align: right;
+}
+.Header {
+  display: flex;
+  flex-flow: column;
   font-size: 1.8rem;
 }

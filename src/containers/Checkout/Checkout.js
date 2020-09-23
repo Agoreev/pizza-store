@@ -1,19 +1,20 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import { withRouter, Redirect } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import Input from "../../components/ui/input";
 import OrderSummary from "./OrderSummary";
-import { Query, Mutation } from "react-apollo";
+import { useQuery, useMutation } from "react-apollo";
 import { GET_CART_ITEMS, CURRENT_USER_QUERY, GET_ORDERS } from "../../queries";
 import { ADD_ORDER, SIGN_IN } from "../../mutations";
 import Spinner from "../../components/ui/spinner";
+import SmallSpinner from "../../components/ui/small-spinner";
 import Subheader from "../Subheader";
 import ErrorIndicator from "../../components/ui/error-indicator";
 import classes from "./Checkout.module.css";
 
-class Checkout extends Component {
-  state = {
+const Checkout = () => {
+  const [state, setState] = useState({
     orderForm: {
       name: {
         elType: "input",
@@ -112,9 +113,11 @@ class Checkout extends Component {
       },
     },
     formIsValid: false,
-  };
+  });
 
-  orderHandler = async (
+  let history = useHistory();
+
+  const orderHandler = async (
     e,
     data,
     addOrderMutation,
@@ -125,8 +128,8 @@ class Checkout extends Component {
 
     //1. Get data from contact form
     const formData = {};
-    for (let elId in this.state.orderForm) {
-      formData[elId] = this.state.orderForm[elId].value;
+    for (let elId in state.orderForm) {
+      formData[elId] = state.orderForm[elId].value;
     }
 
     //2. Check if user log in, if not send login request to the server, which put JWT into cookies in response
@@ -136,9 +139,11 @@ class Checkout extends Component {
           phone: formData.phone,
           name: formData.name,
         },
-        refetchQueries: {
-          query: CURRENT_USER_QUERY,
-        },
+        refetchQueries: [
+          {
+            query: CURRENT_USER_QUERY,
+          },
+        ],
       });
     }
 
@@ -148,6 +153,8 @@ class Checkout extends Component {
       currency: data.currency,
       rate: data.EURRate,
       totalPrice: data.totalPrice,
+      deliveryCost: data.deliveryCost,
+      date: new Date(),
     };
     const order = {
       ...formData,
@@ -159,24 +166,27 @@ class Checkout extends Component {
       variables: {
         order,
       },
-      refetchQueries: {
-        query: GET_ORDERS,
-      },
+      refetchQueries: [
+        {
+          query: GET_ORDERS,
+        },
+      ],
       update(cache) {
         cache.writeData({
           data: {
             cartItems: [],
             totalPrice: 0,
+            purchased: true,
           },
         });
       },
     });
 
     //5. Redirect to order success page
-    this.props.history.push("/order-success");
+    history.push("/order-success");
   };
 
-  checkValidity = (value, validation) => {
+  const checkValidity = (value, validation) => {
     const updatedValidation = { ...validation };
     updatedValidation.valid = true;
     updatedValidation.validationErrors = [];
@@ -207,13 +217,13 @@ class Checkout extends Component {
     return updatedValidation;
   };
 
-  inputChangedHandler = (event, inputIdentifier) => {
-    const updatedOrderForm = { ...this.state.orderForm };
+  const inputChangedHandler = (event, inputIdentifier) => {
+    const updatedOrderForm = { ...state.orderForm };
     const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
     updatedFormElement.value = event.target.value;
     updatedFormElement.touched = true;
     if (updatedFormElement.validation) {
-      updatedFormElement.validation = this.checkValidity(
+      updatedFormElement.validation = checkValidity(
         updatedFormElement.value,
         updatedFormElement.validation
       );
@@ -224,99 +234,87 @@ class Checkout extends Component {
     for (let inputId in updatedOrderForm) {
       formIsValid = updatedOrderForm[inputId].validation.valid && formIsValid;
     }
-    this.setState({
+    setState({
       orderForm: updatedOrderForm,
       formIsValid: formIsValid,
     });
   };
 
-  render() {
-    const formElementsArray = [];
-    for (let key in this.state.orderForm) {
-      formElementsArray.push({
-        id: key,
-        config: this.state.orderForm[key],
-      });
-    }
-
-    return (
-      <Query query={GET_CART_ITEMS}>
-        {({ data, loading, error }) => {
-          if (loading) return <Spinner />;
-          if (error) return <ErrorIndicator />;
-          const purchasingRedirect = !data.cartItems.length ? (
-            <Redirect to="/" />
-          ) : null;
-          return (
-            <div className={classes.Checkout}>
-              {purchasingRedirect}
-              <Link to="/cart" className={classes.EditCartBtn}>
-                <FontAwesomeIcon icon="arrow-left" />
-                &nbsp;Edit cart&nbsp;
-                <FontAwesomeIcon icon="shopping-cart" />
-              </Link>
-              <Subheader title="Checkout" />
-              <OrderSummary
-                cartItems={data.cartItems}
-                currency={data.currency}
-                rate={data.EURRate}
-                totalPrice={data.totalPrice}
-              />
-              <h3>Enter your contact data</h3>
-              <form onSubmit={(e) => this.orderHandler(e, data)}>
-                <Mutation mutation={SIGN_IN}>
-                  {(signIn) => {
-                    return (
-                      <Mutation mutation={ADD_ORDER}>
-                        {(addOrder) => {
-                          return (
-                            <Fragment>
-                              {formElementsArray.map((el) => {
-                                return (
-                                  <Input
-                                    key={el.id}
-                                    elType={el.config.elType}
-                                    label={el.id}
-                                    value={el.config.value}
-                                    elConfig={el.config.elConfig}
-                                    changed={(event) =>
-                                      this.inputChangedHandler(event, el.id)
-                                    }
-                                    validation={el.config.validation}
-                                    touched={el.config.touched}
-                                  />
-                                );
-                              })}
-                              <button
-                                type="submit"
-                                className="button"
-                                disabled={!this.state.formIsValid}
-                                onClick={(e) =>
-                                  this.orderHandler(
-                                    e,
-                                    data,
-                                    addOrder,
-                                    signIn,
-                                    data.isLoggedIn
-                                  )
-                                }
-                              >
-                                ORDER
-                              </button>
-                            </Fragment>
-                          );
-                        }}
-                      </Mutation>
-                    );
-                  }}
-                </Mutation>
-              </form>
-            </div>
-          );
-        }}
-      </Query>
-    );
+  const formElementsArray = [];
+  for (let key in state.orderForm) {
+    formElementsArray.push({
+      id: key,
+      config: state.orderForm[key],
+    });
   }
-}
 
-export default withRouter(Checkout);
+  const { data, loading, error } = useQuery(GET_CART_ITEMS);
+  const [signIn, { loading: signInLoading, error: signInError }] = useMutation(
+    SIGN_IN
+  );
+  const [
+    addOrder,
+    { loading: addOrderLoading, error: addOrderError },
+  ] = useMutation(ADD_ORDER);
+
+  if (loading) return <Spinner />;
+  if (error || signInError || addOrderError) return <ErrorIndicator />;
+
+  const purchasingRedirect = !data.cartItems.length ? (
+    <Redirect to="/" />
+  ) : null;
+
+  return (
+    <div className={classes.Checkout}>
+      {purchasingRedirect}
+      <Link to="/cart" className={classes.EditCartBtn}>
+        <FontAwesomeIcon icon="arrow-left" />
+        &nbsp;Edit cart&nbsp;
+        <FontAwesomeIcon icon="shopping-cart" />
+      </Link>
+      <Subheader title="Checkout" />
+      <OrderSummary
+        cartItems={data.cartItems}
+        currency={data.currency}
+        rate={data.EURRate}
+        totalPrice={data.totalPrice}
+        deliveryCost={data.deliveryCost}
+      />
+      <h3>Enter your contact data</h3>
+      <form
+        onSubmit={(e) =>
+          orderHandler(e, data, addOrder, signIn, data.isLoggedIn)
+        }
+      >
+        <Fragment>
+          {formElementsArray.map((el) => {
+            return (
+              <Input
+                key={el.id}
+                elType={el.config.elType}
+                label={el.id}
+                value={el.config.value}
+                elConfig={el.config.elConfig}
+                changed={(event) => inputChangedHandler(event, el.id)}
+                validation={el.config.validation}
+                touched={el.config.touched}
+              />
+            );
+          })}
+          <div className={classes.SubmitWrapper}>
+            <button
+              type="submit"
+              className="button"
+              disabled={!state.formIsValid || signInLoading || addOrderLoading}
+            >
+              ORDER
+            </button>
+            {addOrderLoading || signInLoading ? <SmallSpinner /> : null}
+          </div>
+        </Fragment>
+      </form>
+    </div>
+  );
+};
+
+export default Checkout;

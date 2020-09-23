@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { useQuery, useMutation } from "react-apollo";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Price from "../../components/price";
 import { GET_PIZZAS, GET_CART_ITEMS } from "../../queries";
 import { TOGGLE_CART } from "../../mutations";
@@ -23,10 +24,15 @@ const Cart = () => {
 
   if (loading) return <Spinner />;
   if (error) return <ErrorIndicator />;
-  const { cartItems, totalPrice, currency, EURRate } = data;
+  const { cartItems, totalPrice, currency, EURRate, deliveryCost } = data;
 
   return (
     <section className={classes.Cart}>
+      <Link to="/" className={classes.PizzaMenuLink}>
+        <FontAwesomeIcon icon="arrow-left" />
+        &nbsp;Pizza menu&nbsp;
+        <FontAwesomeIcon icon="pizza-slice" />
+      </Link>
       <Subheader title="Your cart" />
       {cartItems.length === 0 ? (
         <Fragment>
@@ -46,6 +52,10 @@ const Cart = () => {
               rate={EURRate}
             />
           ))}
+          <span className={classes.DeliveryCost}>
+            Delivery cost:&nbsp;
+            <Price currency={currency} price={deliveryCost} rate={EURRate} />
+          </span>
           <h3 className={classes.TotalPrice}>
             Total price:&nbsp;
             <Price currency={currency} price={totalPrice} rate={EURRate} />
