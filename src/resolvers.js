@@ -22,6 +22,7 @@ const GET_CART_ITEMS = gql`
   query {
     cartItems @client
     totalPrice @client
+    deliveryCost
   }
 `;
 
@@ -32,7 +33,7 @@ export const resolvers = {
         query: GET_CART_ITEMS,
       });
       if (queryResult) {
-        const { cartItems } = queryResult;
+        const { cartItems, deliveryCost } = queryResult;
 
         let newCartItems = null;
         if (count <= 0) {
@@ -56,7 +57,7 @@ export const resolvers = {
 
         const totalPrice = newCartItems.reduce((sum, item) => {
           return sum + item.price * item.count;
-        }, 0);
+        }, deliveryCost);
 
         const data = {
           cartItems: newCartItems,

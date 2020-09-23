@@ -1,12 +1,15 @@
 .OrderSuccess {
-  width: 600px;
-  margin: 0 auto;
+  margin: 10px auto;
   display: flex;
   flex-flow: column;
   justify-content: center;
   text-align: center;
 }
-
+@media (min-width: 500px) {
+  .OrderSuccess {
+    width: 600px;
+  }
+}
 .OrderSuccess footer {
   display: flex;
   justify-content: space-around;

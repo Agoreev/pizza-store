@@ -40,11 +40,16 @@ a {
   border: none;
   outline: none;
   cursor: pointer;
-  padding: 10px;
-  margin: 0 10px;
+  padding: 7px;
+  margin: 0 5px;
   font-weight: bold;
 }
-
+@media (min-width: 500px) {
+  .icon-button {
+    padding: 10px;
+    margin: 0 10px;
+  }
+}
 .button:first-of-type {
   margin-left: 0;
 }

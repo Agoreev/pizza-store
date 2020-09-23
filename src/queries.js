@@ -35,6 +35,7 @@ export const GET_CART_ITEMS = gql`
     totalPrice @client
     currency @client
     EURRate
+    deliveryCost
   }
 `;
 
@@ -43,11 +44,13 @@ export const GET_ORDERS = gql`
     orders {
       _id
       city
+      date
       street
       house
       currency
       rate
       totalPrice
+      deliveryCost
       items {
         pizza {
           _id

@@ -148,6 +148,8 @@ class Checkout extends Component {
       currency: data.currency,
       rate: data.EURRate,
       totalPrice: data.totalPrice,
+      deliveryCost: data.deliveryCost,
+      date: new Date(),
     };
     const order = {
       ...formData,
@@ -261,6 +263,7 @@ class Checkout extends Component {
                 currency={data.currency}
                 rate={data.EURRate}
                 totalPrice={data.totalPrice}
+                deliveryCost={data.deliveryCost}
               />
               <h3>Enter your contact data</h3>
               <form onSubmit={(e) => this.orderHandler(e, data)}>

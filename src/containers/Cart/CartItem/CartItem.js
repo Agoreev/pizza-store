@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo";
 import Price from "../../../components/price";
@@ -31,17 +31,23 @@ const CartItem = ({ item, toggleCart, currency, rate, withoutControls }) => {
   return (
     <article className={classes.CartItem}>
       <img src={pizza.img} className={classes.Img} alt={pizza.name} />
-      <h3 className={classes.Name}>{pizza.name}</h3>
+
       {withoutControls ? (
-        <span className={classes.Count}>{item.count}</span>
+        <Fragment>
+          <span className={classes.Count}>{item.count}</span>
+          <h3 className={classes.Name}>{pizza.name}</h3>
+        </Fragment>
       ) : (
-        <CartControls
-          pizzaId={pizza._id}
-          count={item.count}
-          price={item.price}
-          toggleCart={toggleCart}
-          showRemoveIcon={true}
-        />
+        <Fragment>
+          <h3 className={classes.Name}>{pizza.name}</h3>
+          <CartControls
+            pizzaId={pizza._id}
+            count={item.count}
+            price={item.price}
+            toggleCart={toggleCart}
+            showRemoveIcon={true}
+          />
+        </Fragment>
       )}
 
       <div className={classes.Price}>

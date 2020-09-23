@@ -3,7 +3,18 @@ import Price from "../price";
 import classes from "./order.module.css";
 
 const Order = ({ order }) => {
-  const { city, street, house, currency, rate, totalPrice, items } = order;
+  const {
+    city,
+    street,
+    house,
+    currency,
+    rate,
+    totalPrice,
+    items,
+    date,
+    deliveryCost,
+  } = order;
+
   const orderItems = items.map((item) => {
     return (
       <div className={classes.OrderItem} key={item.pizza._id}>
@@ -24,14 +35,28 @@ const Order = ({ order }) => {
       </div>
     );
   });
+  const convertedDate = new Date(+date);
+
+  const dateString = convertedDate
+    ? ("0" + convertedDate.getDay()).slice(-2) +
+      "." +
+      ("0" + (convertedDate.getMonth() + 1)).slice(-2) +
+      "." +
+      convertedDate.getFullYear()
+    : null;
   const address = city + ", " + street + ", " + house;
   return (
     <article className={classes.Order}>
-      <header className={classes.Address}>{address}</header>
+      <header className={classes.Address}>
+        {dateString}&nbsp;{address}
+      </header>
       <main className={classes.OrderItems}>{orderItems}</main>
+      <span className={classes.DeliveryCost}>
+        Delivery cost:&nbsp;
+        <Price currency={currency} price={deliveryCost} rate={rate} />
+      </span>
       <footer className={classes.TotalPrice}>
-        Total price:&nbsp;
-        <Price currency={currency} price={totalPrice} rate={rate} />
+        Total price:&nbsp;{totalPrice}
       </footer>
     </article>
   );

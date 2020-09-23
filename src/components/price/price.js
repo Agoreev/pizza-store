@@ -5,7 +5,7 @@ const Price = ({ price, rate, currency }) => {
   return (
     <span className={classes.Price}>
       {currency === "$" ? (price * 1).toFixed(2) : (price * rate).toFixed(2)}
-      {" " + currency}
+      {"\u00A0" + currency}
     </span>
   );
 };

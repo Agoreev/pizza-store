@@ -23,7 +23,7 @@ const Cart = () => {
 
   if (loading) return <Spinner />;
   if (error) return <ErrorIndicator />;
-  const { cartItems, totalPrice, currency, EURRate } = data;
+  const { cartItems, totalPrice, currency, EURRate, deliveryCost } = data;
 
   return (
     <section className={classes.Cart}>
@@ -46,6 +46,10 @@ const Cart = () => {
               rate={EURRate}
             />
           ))}
+          <span className={classes.DeliveryCost}>
+            Delivery cost:&nbsp;
+            <Price currency={currency} price={deliveryCost} rate={EURRate} />
+          </span>
           <h3 className={classes.TotalPrice}>
             Total price:&nbsp;
             <Price currency={currency} price={totalPrice} rate={EURRate} />
