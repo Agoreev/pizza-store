@@ -34,8 +34,6 @@ const PizzaMenu = () => {
         eurRate={cartData.EURRate}
         cartItems={cartData.cartItems}
       />
-
-      <button className="btn btn-success">Order now</button>
     </section>
   );
 };

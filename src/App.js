@@ -19,6 +19,7 @@ import PizzaMenu from "./containers/PizzaMenu";
 import Logout from "./containers/Auth/Logout";
 import Cart from "./containers/Cart";
 import Checkout from "./containers/Checkout";
+import OrderSuccess from "./containers/OrderSuccess";
 import { resolvers, typeDefs } from "./resolvers";
 
 import "./App.css";
@@ -63,6 +64,7 @@ const App = () => {
               <Route path="/" component={PizzaMenu} exact />
               <Route path="/cart" component={Cart} />
               <Route path="/checkout" component={Checkout} />
+              <Route path="/order-success" component={OrderSuccess} />
               <Route path="/orders" />
               <Route path="/auth" />
               <Route path="/logout" component={Logout} />

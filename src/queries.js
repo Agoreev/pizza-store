@@ -22,6 +22,12 @@ export const GET_PIZZAS = gql`
   }
 `;
 
+export const IS_LOGGED_IN = gql`
+  query {
+    isLoggedIn @client
+  }
+`;
+
 export const GET_CART_ITEMS = gql`
   query {
     isLoggedIn @client

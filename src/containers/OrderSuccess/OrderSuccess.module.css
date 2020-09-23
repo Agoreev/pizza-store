@@ -1,0 +1,14 @@
+.OrderSuccess {
+  width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.OrderSuccess footer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
