@@ -21,6 +21,12 @@ const Layout = ({ children }) => {
         isLoggedIn: true,
       },
     });
+  } else {
+    client.writeData({
+      data: {
+        isLoggedIn: false,
+      },
+    });
   }
 
   return (

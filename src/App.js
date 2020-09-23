@@ -13,10 +13,12 @@ import {
   faPizzaSlice,
   faCartPlus,
   faArrowLeft,
+  faSignOutAlt,
+  faReceipt,
 } from "@fortawesome/free-solid-svg-icons";
 import Layout from "./containers/Layout";
 import PizzaMenu from "./containers/PizzaMenu";
-import Logout from "./containers/Auth/Logout";
+import Signout from "./containers/Auth/Signout";
 import Cart from "./containers/Cart";
 import Checkout from "./containers/Checkout";
 import OrderSuccess from "./containers/OrderSuccess";
@@ -34,7 +36,9 @@ library.add(
   faSignInAlt,
   faPizzaSlice,
   faCartPlus,
-  faArrowLeft
+  faArrowLeft,
+  faSignOutAlt,
+  faReceipt
 );
 
 const cache = new InMemoryCache();
@@ -44,6 +48,7 @@ cache.writeData({
     cartItems: [],
     currency: "$",
     totalPrice: 0,
+    purchased: false,
   },
 });
 
@@ -68,7 +73,7 @@ const App = () => {
               <Route path="/order-success" component={OrderSuccess} />
               <Route path="/orders" component={Orders} />
               <Route path="/auth" />
-              <Route path="/logout" component={Logout} />
+              <Route path="/signout" component={Signout} />
               <Route render={() => <h2>Page not found</h2>} />
             </Switch>
           </Layout>

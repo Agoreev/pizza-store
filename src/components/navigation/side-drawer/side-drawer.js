@@ -18,7 +18,10 @@ const SideDrawer = ({ closed, open, isAuthenticated }) => {
         </div>
 
         <nav>
-          <NavigationItems isAuthenticated={isAuthenticated} />
+          <NavigationItems
+            isAuthenticated={isAuthenticated}
+            sideDrawerClosed={closed}
+          />
         </nav>
       </div>
     </Fragment>

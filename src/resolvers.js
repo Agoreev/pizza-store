@@ -6,6 +6,7 @@ export const typeDefs = gql`
     cartItems: [CartItem!]!
     totalPrice: Float!
     currency: String!
+    purchased: Boolean!
   }
 
   type CartItem {
@@ -22,6 +23,11 @@ const GET_CART_ITEMS = gql`
   query {
     cartItems @client
     totalPrice @client
+  }
+`;
+
+const GET_DELIVERY_COST = gql`
+  query {
     deliveryCost
   }
 `;
@@ -33,7 +39,13 @@ export const resolvers = {
         query: GET_CART_ITEMS,
       });
       if (queryResult) {
-        const { cartItems, deliveryCost } = queryResult;
+        const { cartItems } = queryResult;
+        const deliveryCostQuery = cache.readQuery({
+          query: GET_DELIVERY_COST,
+        });
+        const deliveryCost = deliveryCostQuery
+          ? deliveryCostQuery.deliveryCost
+          : 2;
 
         let newCartItems = null;
         if (count <= 0) {

@@ -23,8 +23,9 @@ const Order = ({ order }) => {
           className={classes.Img}
           alt={item.pizza.name}
         />
+        <span className={classes.Count}>{item.count}</span>
         <h3 className={classes.Name}>{item.pizza.name}</h3>
-        <span className={classes.Count}>Count:&nbsp;{item.count}</span>
+
         <div className={classes.Price}>
           <Price
             currency={currency}
@@ -42,13 +43,18 @@ const Order = ({ order }) => {
       "." +
       ("0" + (convertedDate.getMonth() + 1)).slice(-2) +
       "." +
-      convertedDate.getFullYear()
+      convertedDate.getFullYear() +
+      " " +
+      ("0" + convertedDate.getHours()).slice(-2) +
+      ":" +
+      ("0" + convertedDate.getMinutes()).slice(-2)
     : null;
   const address = city + ", " + street + ", " + house;
   return (
     <article className={classes.Order}>
-      <header className={classes.Address}>
-        {dateString}&nbsp;{address}
+      <header className={classes.Header}>
+        <span>{dateString}</span>
+        <span>{address}</span>
       </header>
       <main className={classes.OrderItems}>{orderItems}</main>
       <span className={classes.DeliveryCost}>
@@ -56,7 +62,8 @@ const Order = ({ order }) => {
         <Price currency={currency} price={deliveryCost} rate={rate} />
       </span>
       <footer className={classes.TotalPrice}>
-        Total price:&nbsp;{totalPrice}
+        Total price:&nbsp;
+        <Price currency={currency} price={totalPrice} rate={rate} />
       </footer>
     </article>
   );

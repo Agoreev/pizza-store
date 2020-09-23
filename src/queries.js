@@ -22,9 +22,9 @@ export const GET_PIZZAS = gql`
   }
 `;
 
-export const IS_LOGGED_IN = gql`
+export const IS_PURCHASED = gql`
   query {
-    isLoggedIn @client
+    purchased @client
   }
 `;
 

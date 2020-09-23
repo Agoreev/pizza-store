@@ -42,6 +42,8 @@
   font-size: 1.8rem;
   text-align: right;
 }
-.Address {
+.Header {
+  display: flex;
+  flex-flow: column;
   font-size: 1.8rem;
 }

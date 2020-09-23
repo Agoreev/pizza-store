@@ -28,3 +28,10 @@
 .Footer {
   text-align: center;
 }
+
+.PizzaMenuLink {
+  display: block;
+  font-size: 1.8rem;
+  color: #333;
+  text-align: left;
+}
