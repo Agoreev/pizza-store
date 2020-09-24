@@ -1,4 +1,4 @@
-# pizza-frontend
+# pizza-store
 
 Deployed app: https://pizza-store-app.herokuapp.com/
 
