@@ -17,7 +17,7 @@ const Checkout = () => {
   const [state, setState] = useState({
     orderForm: {
       phone: {
-        elType: "maskedInput",
+        elType: "input",
         elConfig: {
           type: "tel",
           placeholder: "Phone",
@@ -25,7 +25,7 @@ const Checkout = () => {
         value: "",
         validation: {
           required: true,
-          maxLength: 11,
+          maxLength: 20,
           valid: false,
         },
         touched: false,
@@ -118,9 +118,17 @@ const Checkout = () => {
       setState((prevState) => {
         const updatedOrderForm = { ...prevState.orderForm };
         const updatedPhone = { ...updatedOrderForm["phone"] };
-        const updatedName = { ...updatedOrderForm["phone"] };
+        const updatedName = { ...updatedOrderForm["name"] };
         updatedPhone.value = userData.me.phone;
         updatedName.value = userData.me.name;
+        updatedPhone.validation = checkValidity(
+          updatedPhone.value,
+          updatedPhone.validation
+        );
+        updatedName.validation = checkValidity(
+          updatedName.value,
+          updatedName.validation
+        );
 
         updatedOrderForm["phone"] = updatedPhone;
         updatedOrderForm["name"] = updatedName;
