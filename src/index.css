@@ -36,6 +36,7 @@ a {
 }
 
 .icon-button {
+  color: #333;
   background-color: transparent;
   border: none;
   outline: none;
@@ -44,6 +45,11 @@ a {
   margin: 0 5px;
   font-weight: bold;
 }
+
+.icon-button:hover {
+  color: #888;
+}
+
 @media (min-width: 500px) {
   .icon-button {
     padding: 10px;
