@@ -21,9 +21,9 @@ const NavigationItems = ({ isAuthenticated, sideDrawerClosed }) => {
         </NavigationItem>
       ) : null}
       {!isAuthenticated ? (
-        <NavigationItem link="/auth" sideDrawerClosed={sideDrawerClosed}>
+        <NavigationItem link="/signin" sideDrawerClosed={sideDrawerClosed}>
           <FontAwesomeIcon icon="sign-in-alt" />
-          &nbsp;AUTHENTICATE
+          &nbsp;SIGN IN
         </NavigationItem>
       ) : (
         <NavigationItem link="/signout" sideDrawerClosed={sideDrawerClosed}>

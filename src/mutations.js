@@ -9,7 +9,7 @@ export const ADD_ORDER = gql`
 `;
 
 export const SIGN_IN = gql`
-  mutation signIn($phone: String!, $name: String) {
+  mutation signIn($phone: String!, $name: String!) {
     signIn(phone: $phone, name: $name) {
       _id
     }

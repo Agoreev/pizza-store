@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { useHistory, Redirect } from "react-router-dom";
@@ -16,6 +16,20 @@ import classes from "./Checkout.module.css";
 const Checkout = () => {
   const [state, setState] = useState({
     orderForm: {
+      phone: {
+        elType: "maskedInput",
+        elConfig: {
+          type: "tel",
+          placeholder: "Phone",
+        },
+        value: "",
+        validation: {
+          required: true,
+          maxLength: 11,
+          valid: false,
+        },
+        touched: false,
+      },
       name: {
         elType: "input",
         elConfig: {
@@ -69,34 +83,6 @@ const Checkout = () => {
         },
         touched: false,
       },
-      phone: {
-        elType: "maskedInput",
-        elConfig: {
-          type: "tel",
-          placeholder: "Phone",
-        },
-        value: "",
-        validation: {
-          required: true,
-          maxLength: 11,
-          valid: false,
-        },
-        touched: false,
-      },
-      email: {
-        elType: "input",
-        elConfig: {
-          type: "email",
-          placeholder: "E-mail",
-        },
-        value: "",
-        validation: {
-          required: true,
-          minLength: 5,
-          valid: false,
-        },
-        touched: false,
-      },
       deliveryMethod: {
         elType: "select",
         elConfig: {
@@ -116,6 +102,34 @@ const Checkout = () => {
   });
 
   let history = useHistory();
+  const { data, loading, error } = useQuery(GET_CART_ITEMS);
+  const { data: userData } = useQuery(CURRENT_USER_QUERY);
+  const [signIn, { loading: signInLoading, error: signInError }] = useMutation(
+    SIGN_IN
+  );
+  const [
+    addOrder,
+    { loading: addOrderLoading, error: addOrderError },
+  ] = useMutation(ADD_ORDER);
+
+  useEffect(() => {
+    //insert phone and name in controls if user logged in
+    if (!!userData && userData.me) {
+      setState((prevState) => {
+        const updatedOrderForm = { ...prevState.orderForm };
+        const updatedPhone = { ...updatedOrderForm["phone"] };
+        const updatedName = { ...updatedOrderForm["phone"] };
+        updatedPhone.value = userData.me.phone;
+        updatedName.value = userData.me.name;
+
+        updatedOrderForm["phone"] = updatedPhone;
+        updatedOrderForm["name"] = updatedName;
+        return {
+          orderForm: updatedOrderForm,
+        };
+      });
+    }
+  }, [userData]);
 
   const orderHandler = async (
     e,
@@ -248,18 +262,10 @@ const Checkout = () => {
     });
   }
 
-  const { data, loading, error } = useQuery(GET_CART_ITEMS);
-  const [signIn, { loading: signInLoading, error: signInError }] = useMutation(
-    SIGN_IN
-  );
-  const [
-    addOrder,
-    { loading: addOrderLoading, error: addOrderError },
-  ] = useMutation(ADD_ORDER);
-
   if (loading) return <Spinner />;
   if (error || signInError || addOrderError) return <ErrorIndicator />;
 
+  //if no items in cart redirect to menu
   const purchasingRedirect = !data.cartItems.length ? (
     <Redirect to="/" />
   ) : null;

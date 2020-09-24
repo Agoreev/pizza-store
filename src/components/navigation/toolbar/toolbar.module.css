@@ -21,7 +21,20 @@
   height: 80%;
 }
 
-@media (max-width: 699px) {
+.User {
+  margin-right: auto;
+  margin-left: 20px;
+  color: white;
+  font-size: 1.8rem;
+}
+
+@media (max-width: 600px) {
+  .User {
+    display: none;
+  }
+}
+
+@media (max-width: 859px) {
   .DesktopOnly {
     display: none;
   }

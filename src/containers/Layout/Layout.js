@@ -11,11 +11,11 @@ const Layout = ({ children }) => {
   const sideDrawerToggleHandler = () => {
     setShowSideDrawer(!showSideDrawer);
   };
-  const { data } = useQuery(CURRENT_USER_QUERY);
+  const { data: userData } = useQuery(CURRENT_USER_QUERY);
 
   const client = useApolloClient();
 
-  if (!!data && data.me) {
+  if (!!userData && userData.me) {
     client.writeData({
       data: {
         isLoggedIn: true,
@@ -28,16 +28,19 @@ const Layout = ({ children }) => {
       },
     });
   }
+  const userName = !!userData && !!userData.me ? userData.me.name : null;
 
   return (
     <Fragment>
       <Toolbar
-        isAuthenticated={!!data && data.me}
+        isAuthenticated={!!userData && userData.me}
+        userName={userName}
         sideDrawerOpen={sideDrawerToggleHandler}
       />
       <SideDrawer
-        isAuthenticated={!!data && data.me}
+        isAuthenticated={!!userData && userData.me}
         closed={sideDrawerToggleHandler}
+        userName={userName}
         open={showSideDrawer}
       />
       <main className={classes.Content}>{children}</main>

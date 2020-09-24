@@ -18,7 +18,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Layout from "./containers/Layout";
 import PizzaMenu from "./containers/PizzaMenu";
-import Signout from "./containers/Auth/Signout";
+import SignIn from "./containers/Auth/SignIn";
+import SignOut from "./containers/Auth/SignOut";
 import Cart from "./containers/Cart";
 import Checkout from "./containers/Checkout";
 import OrderSuccess from "./containers/OrderSuccess";
@@ -72,8 +73,8 @@ const App = () => {
               <Route path="/checkout" component={Checkout} />
               <Route path="/order-success" component={OrderSuccess} />
               <Route path="/orders" component={Orders} />
-              <Route path="/auth" />
-              <Route path="/signout" component={Signout} />
+              <Route path="/signin" component={SignIn} />
+              <Route path="/signout" component={SignOut} />
               <Route render={() => <h2>Page not found</h2>} />
             </Switch>
           </Layout>
