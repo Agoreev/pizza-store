@@ -161,7 +161,6 @@ const SignIn = () => {
     <div className={classes.SignIn}>
       <Helmet>
         <title>Pizza store | Sign in</title>
-        <meta property="og:title" content="Pizza store | Sign in" />
       </Helmet>
       {authRedirect}
       <form onSubmit={(e) => submitHandler(e, signIn)}>

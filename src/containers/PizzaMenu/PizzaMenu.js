@@ -30,7 +30,6 @@ const PizzaMenu = () => {
     <section className={classes.PizzaMenu}>
       <Helmet>
         <title>Pizza store | Menu</title>
-        <meta property="og:title" content="Pizza store | Menu" />
       </Helmet>
       <Subheader title="Pizza menu">{cartButton}</Subheader>
       <PizzaList

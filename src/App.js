@@ -68,35 +68,6 @@ const App = () => {
     <div className="App">
       <Helmet>
         <title>Pizza store</title>
-        <meta property="og:title" content="Pizza store" />
-        <meta property="vk:title" content="Pizza store" />
-        <meta property="twitter:title" content="Pizza store" />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:description"
-          content="Pizza store, order our pizza and enjoy!"
-        />
-        <meta
-          property="vk:description"
-          content="Pizza store, order our pizza and enjoy!"
-        />
-        <meta
-          property="twitter:description"
-          content="Pizza store, order our pizza and enjoy!"
-        />
-        <meta
-          property="og:image:secure_url"
-          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1601024421/pizza/pizza_big_q16fgb.jpg"
-        />
-        <meta
-          property="twitter:image:secure_url"
-          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1601024421/pizza/pizza_big_q16fgb.jpg"
-        />
-        <meta
-          property="vk:image:secure_url"
-          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1601024421/pizza/pizza_big_q16fgb.jpg"
-        />
-        <meta property="og:sitename" content="Pizza store" />
       </Helmet>
       <ApolloProvider client={client}>
         <Router>

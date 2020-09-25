@@ -19,7 +19,6 @@ const Orders = () => {
     <section className={classes.Orders}>
       <Helmet>
         <title>Pizza store | Orders</title>
-        <meta property="og:title" content="Pizza store | Orders" />
       </Helmet>
       {ordersList}
     </section>

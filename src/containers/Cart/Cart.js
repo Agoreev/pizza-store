@@ -31,7 +31,6 @@ const Cart = () => {
     <section className={classes.Cart}>
       <Helmet>
         <title>Pizza store | Cart</title>
-        <meta property="og:title" content="Pizza store | Cart" />
       </Helmet>
       <Link to="/" className={classes.PizzaMenuLink}>
         <FontAwesomeIcon icon="arrow-left" />
