@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "react-apollo";
+import Helmet from "react-helmet";
 import { GET_ORDERS } from "../../queries";
-
 import Order from "../../components/order";
 import Spinner from "../../components/ui/spinner";
 import ErrorIndicator from "../../components/ui/error-indicator";
@@ -15,7 +15,15 @@ const Orders = () => {
     return <Order order={order} key={order._id} />;
   });
 
-  return <section className={classes.Orders}>{ordersList}</section>;
+  return (
+    <section className={classes.Orders}>
+      <Helmet>
+        <title>Pizza store | Orders</title>
+        <meta property="og:title" content="Pizza store | Orders" />
+      </Helmet>
+      {ordersList}
+    </section>
+  );
 };
 
 export default Orders;

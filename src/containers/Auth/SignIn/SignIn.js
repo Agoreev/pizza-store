@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { useMutation, useQuery } from "react-apollo";
+import Helmet from "react-helmet";
 import { SIGN_IN } from "../../../mutations";
 import { CURRENT_USER_QUERY } from "../../../queries";
 import Input from "../../../components/ui/input";
@@ -158,6 +159,10 @@ const SignIn = () => {
 
   return (
     <div className={classes.SignIn}>
+      <Helmet>
+        <title>Pizza store | Sign in</title>
+        <meta property="og:title" content="Pizza store | Sign in" />
+      </Helmet>
       {authRedirect}
       <form onSubmit={(e) => submitHandler(e, signIn)}>
         {form}

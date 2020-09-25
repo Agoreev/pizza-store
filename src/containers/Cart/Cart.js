@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { useQuery, useMutation } from "react-apollo";
 import { Link } from "react-router-dom";
+import Helmet from "react-helmet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Price from "../../components/price";
 import { GET_PIZZAS, GET_CART_ITEMS } from "../../queries";
@@ -28,6 +29,10 @@ const Cart = () => {
 
   return (
     <section className={classes.Cart}>
+      <Helmet>
+        <title>Pizza store | Cart</title>
+        <meta property="og:title" content="Pizza store | Cart" />
+      </Helmet>
       <Link to="/" className={classes.PizzaMenuLink}>
         <FontAwesomeIcon icon="arrow-left" />
         &nbsp;Pizza menu&nbsp;

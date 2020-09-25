@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "react-apollo";
 import { GET_PIZZAS, GET_CART_ITEMS } from "../../queries";
+import Helmet from "react-helmet";
 import PizzaList from "./pizza-list";
 import Subheader from "../Subheader";
 import Spinner from "../../components/ui/spinner";
@@ -27,6 +28,10 @@ const PizzaMenu = () => {
     ) : null;
   return (
     <section className={classes.PizzaMenu}>
+      <Helmet>
+        <title>Pizza store | Menu</title>
+        <meta property="og:title" content="Pizza store | Menu" />
+      </Helmet>
       <Subheader title="Pizza menu">{cartButton}</Subheader>
       <PizzaList
         data={data}

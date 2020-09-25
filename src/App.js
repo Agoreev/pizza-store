@@ -16,6 +16,8 @@ import {
   faSignOutAlt,
   faReceipt,
 } from "@fortawesome/free-solid-svg-icons";
+import Helmet from "react-helmet";
+import titleImage from "./assets/images/pizza.png";
 import Layout from "./containers/Layout";
 import PizzaMenu from "./containers/PizzaMenu";
 import SignIn from "./containers/Auth/SignIn";
@@ -64,6 +66,11 @@ const client = new ApolloClient({
 const App = () => {
   return (
     <div className="App">
+      <Helmet>
+        <title>Pizza store</title>
+        <meta property="og:title" content="Pizza store" />
+        <meta property="og:image" content={titleImage} />
+      </Helmet>
       <ApolloProvider client={client}>
         <Router>
           <Layout>
