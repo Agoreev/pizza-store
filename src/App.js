@@ -86,15 +86,15 @@ const App = () => {
         />
         <meta
           property="og:image"
-          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1600264428/pizza/italian_z9iqxi.jpg"
+          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1601024421/pizza/pizza_big_q16fgb.jpg"
         />
         <meta
           property="twitter:image"
-          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1600264428/pizza/italian_z9iqxi.jpg"
+          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1601024421/pizza/pizza_big_q16fgb.jpg"
         />
         <meta
           property="vk:image"
-          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1600264428/pizza/italian_z9iqxi.jpg"
+          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1601024421/pizza/pizza_big_q16fgb.jpg"
         />
         <meta property="og:sitename" content="Pizza store" />
       </Helmet>
