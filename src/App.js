@@ -71,10 +71,7 @@ const App = () => {
         <meta property="og:title" content="Pizza store" />
         <meta property="vk:title" content="Pizza store" />
         <meta property="twitter:title" content="Pizza store" />
-        <meta
-          property="description"
-          content="Pizza store, order our pizza and enjoy!"
-        />
+        <meta property="og:type" content="website" />
         <meta
           property="og:description"
           content="Pizza store, order our pizza and enjoy!"
@@ -87,9 +84,18 @@ const App = () => {
           property="twitter:description"
           content="Pizza store, order our pizza and enjoy!"
         />
-        <meta property="og:image" content={titleImage} />
-        <meta property="twitter:image" content={titleImage} />
-        <meta property="vk:image" content={titleImage} />
+        <meta
+          property="og:image"
+          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1600264428/pizza/italian_z9iqxi.jpg"
+        />
+        <meta
+          property="twitter:image"
+          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1600264428/pizza/italian_z9iqxi.jpg"
+        />
+        <meta
+          property="vk:image"
+          content="https://res.cloudinary.com/dqmh9epb9/image/upload/v1600264428/pizza/italian_z9iqxi.jpg"
+        />
         <meta property="og:sitename" content="Pizza store" />
       </Helmet>
       <ApolloProvider client={client}>
