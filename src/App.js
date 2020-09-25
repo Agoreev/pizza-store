@@ -69,7 +69,28 @@ const App = () => {
       <Helmet>
         <title>Pizza store</title>
         <meta property="og:title" content="Pizza store" />
+        <meta property="vk:title" content="Pizza store" />
+        <meta property="twitter:title" content="Pizza store" />
+        <meta
+          property="description"
+          content="Pizza store, order our pizza and enjoy!"
+        />
+        <meta
+          property="og:description"
+          content="Pizza store, order our pizza and enjoy!"
+        />
+        <meta
+          property="vk:description"
+          content="Pizza store, order our pizza and enjoy!"
+        />
+        <meta
+          property="twitter:description"
+          content="Pizza store, order our pizza and enjoy!"
+        />
         <meta property="og:image" content={titleImage} />
+        <meta property="twitter:image" content={titleImage} />
+        <meta property="vk:image" content={titleImage} />
+        <meta property="og:sitename" content="Pizza store" />
       </Helmet>
       <ApolloProvider client={client}>
         <Router>
